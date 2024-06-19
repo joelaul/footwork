@@ -1,4 +1,4 @@
-# footwork - a CLI tool for instagram
+# footwork - a CLI marketing tool for Instagram
 
 ## how to use
 
