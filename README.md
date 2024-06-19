@@ -8,4 +8,4 @@
 1. open terminal
 1. run `cd path/to/footwork`
 1. run `yarn install`
-1. run `node app.js [your-user-list].txt [amount]`
+1. run `node app.js txt/[your-user-list].txt [amount]`
