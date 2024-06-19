@@ -6,13 +6,25 @@ import { IgApiClient } from 'instagram-private-api';
 import dotenv from "dotenv";
 dotenv.config();
 
-/* TODO: 
-    // find way around 2fa?
-    // set up proxy URL
-    // sequence / fragment requests to avoid penalties
-    // improve validation
-    // automate user dataset retrieval
-    // different data sources: non-following users that liked my post, etc.
+const ig = new IgApiClient();
+
+/* TODO:
+
+    CORE:
+        // main() - add CLI arg for the DM itself
+        // messageUsers() - sequence call batches to avoid rate limit (200 reqs/hr)
+        // messageUsers() - re-roll on duplicates across call batches
+        // messageUsers() - re-roll if user already follows me
+
+    SECURITY:
+        // improve validation
+        // set up proxy URL
+        // find way around 2fa?
+
+    EXTENSION:
+        // automate user dataset retrieval
+        // different data sources: non-following users that liked my post, etc.
+        
 */
 
 /**
@@ -21,8 +33,6 @@ dotenv.config();
  * @param {string} filePath The path to the text list.
  * @param {number} [amt=1] The number of users to DM.
  */
-
-const ig = new IgApiClient();
 
 const isValid = (filePath, amt) => {
     const validPath = `txt/${path.basename(filePath)}`; 
@@ -61,13 +71,15 @@ const messageUsers = async (arr, count) => {
 
         /* TEST REQUEST:
         // const id = await ig.user.getIdByUsername(`joelaul`);
-        // await thread.broadcastText(`Hey, saw that you liked my comment on Spiro's post. We put out a track together called Huckleberry Sin, and we'll probably have more on the way, so I'd be stoked if you followed to stay tuned!`);
+        // await thread.broadcastText(`test`);
         // console.log(`Messaging user joelaul...`);
         */
+
         const id = await ig.user.getIdByUsername(user);
         const thread = ig.entity.directThread([id.toString()]);
-        console.log(`Messaging user #${idx + 1}: ${user}...`);
-        await thread.broadcastText(`test`);
+
+        console.log(`Messaging user ${user}...`);
+        await thread.broadcastText(`Yo! I saw that you liked my comment on Spiro's post. We put out a track together called Huckleberry Sin, and we plan to do more. Would be stoked if you followed to stay tuned :)`);
 
         selectedUsers.add(user);
     }
